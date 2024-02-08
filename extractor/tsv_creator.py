@@ -7,6 +7,9 @@ from extractor.book import Book
 class CsvCreator:
 
     def create(self, books: list[Book]):
+        if not books:
+            return ''
+
         # Convert to DataFrame
         df_books = pd.DataFrame([book.__dict__ for book in books])
         df_books_reordered = df_books[['author', 'title', 'description']]
@@ -16,7 +19,8 @@ class CsvCreator:
         csv_buffer = io.StringIO()
 
         # Write the DataFrame to the StringIO object as CSV
-        df_books_reordered.to_csv(csv_buffer, sep='\t', index=False, header=False, lineterminator='\n')
+        df_books_reordered.to_csv(
+            csv_buffer, sep='\t', index=False, header=False, lineterminator='\n')
 
         # Get the CSV content as a string
         return csv_buffer.getvalue()
