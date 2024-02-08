@@ -1,7 +1,7 @@
 import io
 import pandas as pd
 
-from book import Book
+from extractor.book import Book
 
 
 class CsvCreator:

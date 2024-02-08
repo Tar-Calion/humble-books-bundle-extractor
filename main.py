@@ -1,6 +1,5 @@
-from books_extractor import BooksExtractor
-from books_extractor import BooksExtractor
-from tsv_creator import CsvCreator
+from extractor.books_extractor import BooksExtractor
+from extractor.tsv_creator import CsvCreator
 
 
 # Load the HTML content from file

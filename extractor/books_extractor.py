@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from book import Book
+from extractor.book import Book
 
 
 class BooksExtractor:
@@ -15,6 +15,7 @@ class BooksExtractor:
 
         # Extract book titles, authors, and descriptions
         books = []
+        
 
         for title_tag in soup.find_all('h2', class_='heading-medium'):
             title = title_tag.get_text(strip=True)
