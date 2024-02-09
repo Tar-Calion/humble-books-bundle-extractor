@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 # Project specific
-book-info.csv
-bundle-info.html
+/book-info.csv
+
