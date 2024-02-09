@@ -12,11 +12,15 @@ class CsvCreator:
 
         # Convert to DataFrame
         df_books = pd.DataFrame([book.__dict__ for book in books])
-        df_books_reordered = df_books[['author', 'title', 'year', 'description', 'formats']]
+        df_books_reordered = df_books[['author', 'title', 'year', 'description', 'labels', 'account', 'formats']]
 
         # Handle empty or non-numeric 'year' values, remove decimal part
         df_books_reordered['year'] = df_books_reordered['year'].apply(
             lambda x: '' if pd.isna(x) else str(int(x)))
+
+        # join the labels list into a string, separated by ', '
+        df_books_reordered['labels'] = df_books_reordered['labels'].apply(
+            lambda x: ', '.join(x) if x else '')
 
         # join the formats list into a string, separated by ', '
         df_books_reordered['formats'] = df_books_reordered['formats'].apply(
