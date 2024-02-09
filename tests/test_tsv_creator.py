@@ -18,9 +18,9 @@ class TestCsvCreator(unittest.TestCase):
     def test_create(self):
         result = self.creator.create(self.books)
         expected_output = (
-            "Test Author 1\tTest Title 1\t2021\tTest Description 1\tTest Label 1\tHumble Bundle\tPDF, EPUB\n"
-            "Test Author 2\tTest Title 2\t2020\tTest Description 2\tTest Label 2, Test Label 3\tHumble Bundle\tPDF\n"
-            "Test Author 3\tTest Title 3\t\tTest Description 3 \t\tHumble Bundle\tPDF, EPUB, MOBI\n"
+            '"Test Author 1"\t"Test Title 1"\t"2021"\t"Test Description 1"\t"Test Label 1"\t"Humble Bundle"\t"PDF, EPUB"\n'
+            '"Test Author 2"\t"Test Title 2"\t"2020"\t"Test Description 2"\t"Test Label 2, Test Label 3"\t"Humble Bundle"\t"PDF"\n'
+            '"Test Author 3"\t"Test Title 3"\t""\t"Test Description 3 "\t""\t"Humble Bundle"\t"PDF, EPUB, MOBI"\n'
         )
         self.assertEqual(result, expected_output)
 

@@ -31,7 +31,7 @@ class CsvCreator:
 
         # Write the DataFrame to the StringIO object as CSV
         df_books_reordered.to_csv(
-            csv_buffer, sep='\t', index=False, header=False, lineterminator='\n')
+            csv_buffer, sep='\t', index=False, header=False, lineterminator='\n', quoting=1, quotechar='"')
 
         # Get the CSV content as a string
         return csv_buffer.getvalue()

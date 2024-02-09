@@ -1,5 +1,9 @@
 from extractor.books_extractor import BooksExtractor
 from extractor.tsv_creator import CsvCreator
+from extractor.labeler import Labeler
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # Load the HTML content from file
@@ -9,13 +13,13 @@ with open(html_file_path, 'r', encoding='utf-8') as html_file:
 
 books = BooksExtractor().extract(html_content)
 
+for book in books:
+    book.labels = Labeler(simulate=False).get_labels(book)
+
+
 tsv = CsvCreator().create(books)
 
 # Write the TSV content to file
 tsv_file_path = 'book-info.csv'
 with open(tsv_file_path, 'w', encoding='utf-8') as tsv_file:
     tsv_file.write(tsv)
-
-
-
-
