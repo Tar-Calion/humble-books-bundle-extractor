@@ -1,3 +1,4 @@
+from openai import OpenAI
 from extractor.books_extractor import BooksExtractor
 from extractor.tsv_creator import CsvCreator
 from extractor.labeler import Labeler
@@ -14,7 +15,7 @@ with open(html_file_path, 'r', encoding='utf-8') as html_file:
 books = BooksExtractor().extract(html_content)
 
 for book in books:
-    book.labels = Labeler(simulate=False).get_labels(book)
+    book.labels = Labeler(openai_client=OpenAI(), simulate=True).get_labels(book)
 
 
 tsv = CsvCreator().create(books)

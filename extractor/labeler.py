@@ -7,8 +7,9 @@ from extractor.book import Book
 
 class Labeler:
 
-    def __init__(self, simulate: bool = False):
+    def __init__(self, openai_client: OpenAI, simulate: bool = False):
         self.simulate = simulate
+        self.openai_client = openai_client
 
     def get_labels(self, book: Book) -> list[str]:
         print("Getting labels for the book:\n" +
@@ -20,18 +21,13 @@ class Labeler:
             print("Simulating the labeler...")
             return ["Label 1", "Label 2", "Label 3"]
 
-        client = OpenAI(
-            # This is the default and can be omitted
-            api_key=os.environ.get("OPENAI_API_KEY"),
-        )
-
-        chat_completion = client.chat.completions.create(
+        chat_completion = self.openai_client.chat.completions.create(
             messages=[
                 {
                     "role": "system",
                     "content": ("Analyze the book data provided and suggest 1 to 3 labels or themes that best characterize the book. "
                                 "Consider the author, title, and description to determine the overarching themes or specific topics discussed in the book. "
-                                "Once you have identified the themes, please provide them in your response, separated by commas."
+                                "Once you have identified the themes, please provide them in your response, separated by commas. "
                                 "Valid response may look like that: Java, Software Architecture")
                 },
                 {
@@ -39,7 +35,7 @@ class Labeler:
                     "content": "Title: {}\nAuthor: {}\nDescription: {}""".format(book.title, book.author, book.description)
                 }
             ],
-            model="gpt-3.5-turbo-0125",
+            model=os.environ.get("OPENAI_MODEL"),
         )
 
         print("Used model: {}".format(chat_completion.model))
