@@ -2,7 +2,7 @@
 from extractor.book import Book
 import requests
 from bs4 import BeautifulSoup
-from googlesearch import search
+import googlesearch
 
 
 class YearFinder:
@@ -33,14 +33,19 @@ class YearFinder:
                 soup = BeautifulSoup(html_content, 'html.parser')
 
                 # Find text from <div class="t-release-date">Released December 2022</div>
-                release_date_text = soup.find('div', class_='t-release-date').get_text(strip=True)
+                release_date_div = soup.find('div', class_='t-release-date')
+                release_date_text = release_date_div.get_text(strip=True) if release_date_div else "Release date not found"
                 print(f"Release date text: {release_date_text}")
 
                 # Extract the year from the text
                 year = release_date_text.split()[-1]
-                print(f"Year: {year}")
+                # Check if the year is a reasonable number
+                if year.isdigit() and 1900 <= int(year) <= 2100:
+                    print(f"Year: {year}")
+                    return year
 
-                return year
+                print(f"Year not found in the text: {release_date_text}")
+                return None
 
         return None
 
@@ -49,7 +54,7 @@ class YearFinder:
         print(f"Searching for: {search_term}")
 
         # Get the HTML content of the Google search results and convert to list
-        search_results = list(search(search_term, num_results=10))
+        search_results = list(googlesearch.search(search_term, num_results=10))
 
         # print the search results
         print("Search results:")
