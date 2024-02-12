@@ -20,7 +20,7 @@ class TestBooksExtractor(unittest.TestCase):
                  None,
                  ["PDF", "EPUB"],
                  None,
-                 "01-01-2021",
+                 "01.01.2021",
                  "Humble Tech Book Bundle: AWS, Azure, and Google Cloud Development by O'Reilly"),
             Book("Building Serverless Applications on Knative",
                  "Evan Anderson",
@@ -28,7 +28,7 @@ class TestBooksExtractor(unittest.TestCase):
                  None,
                  ["PDF", "EPUB"],
                  None,
-                 "01-01-2021",
+                 "01.01.2021",
                  "Humble Tech Book Bundle: AWS, Azure, and Google Cloud Development by O'Reilly"),
             Book("Learning Serverless",
                  "Jason Katzer",
@@ -36,7 +36,7 @@ class TestBooksExtractor(unittest.TestCase):
                  None,
                  ["PDF", "EPUB", "MOBI"],
                  None,
-                 "01-01-2021",
+                 "01.01.2021",
                  "Humble Tech Book Bundle: AWS, Azure, and Google Cloud Development by O'Reilly"),
             Book("Migrating to AWS: A Manager's Guide",
                  "Jeff Armstrong",
@@ -44,7 +44,7 @@ class TestBooksExtractor(unittest.TestCase):
                  None,
                  ["PDF", "EPUB", "MOBI"],
                  None,
-                 "01-01-2021",
+                 "01.01.2021",
                  "Humble Tech Book Bundle: AWS, Azure, and Google Cloud Development by O'Reilly"),
             Book("Low-Code AI",
                  "Gwendolyn Stripling",
@@ -52,7 +52,7 @@ class TestBooksExtractor(unittest.TestCase):
                  None,
                  ["PDF", "EPUB"],
                  None,
-                 "01-01-2021",
+                 "01.01.2021",
                  "Humble Tech Book Bundle: AWS, Azure, and Google Cloud Development by O'Reilly"),
         ]
         actual_books = self.extractor.extract(self.html_content)
@@ -65,7 +65,7 @@ class TestBooksExtractor(unittest.TestCase):
             self.assertEqual(
                 actual_books[i].formats, expected_books[i].formats)
             self.assertRegex(
-                actual_books[i].purchase_date, r'\d{2}-\d{2}-\d{4}')
+                actual_books[i].purchase_date, r'\d{2}\.\d{2}\.\d{4}')
             self.assertEqual(actual_books[i].source, expected_books[i].source)
 
 

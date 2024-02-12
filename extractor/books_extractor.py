@@ -51,9 +51,8 @@ class BooksExtractor:
 
             formats = self._get_formats(title_tag)
 
-            # Get todays date as purchase date in the format DD-MM-YYYY
-            purchase_date = datetime.date.today().strftime('%d-%m-%Y')
-
+            # Get todays date as purchase date in the format DD.MM.YYYY
+            purchase_date = datetime.date.today().strftime('%d.%m.%Y')
             # Find source from the 'content' attribute of the meta tag with name="title"
             source = soup.find('meta', attrs={'name': 'title'})['content']
 
