@@ -1,3 +1,4 @@
+import datetime
 from bs4 import BeautifulSoup
 from extractor.book import Book
 
@@ -50,7 +51,10 @@ class BooksExtractor:
 
             formats = self._get_formats(title_tag)
 
+            # Get todays date as purchase date in the format DD-MM-YYYY
+            purchase_date = datetime.date.today().strftime('%d-%m-%Y')
+
             if author != 'Unknown' and description != 'No description available':
-                books.append(Book(title, author, description, formats=formats))
+                books.append(Book(title, author, description, formats=formats, purchase_date=purchase_date))
 
         return books

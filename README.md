@@ -1,5 +1,5 @@
 # humble-books-bundle-extractor
-Extracts book infos from the humble bundle pages: title, author, description, year, keywords, formats
+Extracts book infos from the humble bundle pages: title, author, description, year, keywords, etc.
 
 1. Finds title, author, description and formats from the file "bundle-info.html"
 2. Uses the OpenAI GPT-3 API to find the keywords using the book info
@@ -15,6 +15,7 @@ Extracts book infos from the humble bundle pages: title, author, description, ye
   - Keywords (e.g. "Machine Learning, No-Code AI, Data Analysis")
   - Account "Humble Bundle"
   - Formats (e.g. "PDF, EPUB, MOBI")
+  - Purchase date (date when the tool was run)
 
 
 ## Requirements

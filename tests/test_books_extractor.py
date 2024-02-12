@@ -49,6 +49,8 @@ class TestBooksExtractor(unittest.TestCase):
             self.assertEqual(actual_books[i].year, expected_books[i].year)
             self.assertEqual(
                 actual_books[i].formats, expected_books[i].formats)
+            self.assertRegex(
+                actual_books[i].purchase_date, r'\d{2}-\d{2}-\d{4}')
 
 
 if __name__ == '__main__':
