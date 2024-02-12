@@ -4,8 +4,8 @@ from extractor.book import Book
 
 class BooksExtractor:
 
-    # Function to replace line breaks with a space, adding a space if the line does not end with one
-    def _butify_description(self, text):
+    # Function to replace line breaks with a space and remove extra spaces
+    def _butify_text(self, text):
         lines = text.split('\n')
         joined_description = ' '.join(line if line.endswith(' ') else line + ' ' for line in lines)
 
@@ -41,11 +41,12 @@ class BooksExtractor:
             # Find the nearest author tag relative to the current title tag
             author_tag = title_tag.find_next('div', class_='publishers-and-developers')
             author = author_tag.find('span').get_text(strip=True) if author_tag else 'Unknown'
+            author = self._butify_text(author)
 
             # Find the nearest description tag relative to the current title tag
             description_tag = title_tag.find_next('section', class_='description')
             description = description_tag.get_text(strip=True) if description_tag else 'No description available'
-            description = self._butify_description(description)
+            description = self._butify_text(description)
 
             formats = self._get_formats(title_tag)
 
