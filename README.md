@@ -22,18 +22,19 @@ Extracts book infos from the humble bundle pages: title, author, description, ye
 
 ## Installation
 - Install the requirements with `pip install -r requirements.txt`
-- Configure the OpenAI GPT-3 API key and the model name in the file ".env"
+- Configure the OpenAI GPT-3 API key and the model name in the file ".env". See the file ".env_example" for an example
 
 ## Usage
 1. Download the humble bundle page and save it as "bundle-info.html"
-2. Run main.py
-3. The book info will be saved in "book-info-before-labeling.tsv", "book-info-after-labeling.tsv" and "book-info-after-year-finding.tsv"
+1. Adjust flags in main.py to run the desired steps: stage_2_label_books_with_openai, stage_3_find_years
+1. Run main.py
+1. The book info will be saved in "book-info-before-labeling.tsv", "book-info-after-labeling.tsv" and "book-info-after-year-finding.tsv"
 
 ## Known issues
 - The Google Search may be blocked by Google if the script is run too many times in a short period of time. The script will stop with an error message "429 Client Error: Too Many Requests for url..."
 
 ## Future work
-- Use SERP API to avoid the Google Search block and manual scrapping
+- Use a SERP API to avoid the Google Search block and manual scrapping
 - Add support for more websites to find the year of the book
   - Or use an AI API to find the year of the book from the scrapped websites
   - Or use an AI API for Internet search and scrapping to find the year of the book when such service is available (currently not available in the OpenAI API)
