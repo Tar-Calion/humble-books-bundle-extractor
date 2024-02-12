@@ -12,7 +12,7 @@ class CsvCreator:
 
         # Convert to DataFrame
         df_books = pd.DataFrame([book.__dict__ for book in books])
-        df_books_reordered = df_books[['title', 'author', 'year', 'description', 'labels', 'account', 'formats', 'purchase_date']]
+        df_books_reordered = df_books[['title', 'author', 'year', 'description', 'labels', 'account', 'formats', 'purchase_date', 'source']]
 
         # Handle empty or non-numeric 'year' values, remove decimal part
         df_books_reordered['year'] = df_books_reordered['year'].apply(

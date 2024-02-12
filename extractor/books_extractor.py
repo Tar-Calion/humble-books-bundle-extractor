@@ -54,7 +54,10 @@ class BooksExtractor:
             # Get todays date as purchase date in the format DD-MM-YYYY
             purchase_date = datetime.date.today().strftime('%d-%m-%Y')
 
+            # Find source from the 'content' attribute of the meta tag with name="title"
+            source = soup.find('meta', attrs={'name': 'title'})['content']
+
             if author != 'Unknown' and description != 'No description available':
-                books.append(Book(title, author, description, formats=formats, purchase_date=purchase_date))
+                books.append(Book(title, author, description, formats=formats, purchase_date=purchase_date, source=source))
 
         return books
