@@ -7,23 +7,17 @@ import googlesearch
 
 class YearFinder:
 
-    def _filter_links(self, search_results: list[str]) -> list[str]:
-        bad_websites = ["amazon", "ebay"]
-        good_links = []
-
-        # filter out links that contain bad websites
-        for result in search_results:
-            if not any(bad_website in result for bad_website in bad_websites):
-                good_links.append(result)
-
-        return good_links
+    def cut_oreilly_link(self, link: str) -> str:
+        return link[:link.rfind('/') + 1]
 
     def _try_find_year_in_orelly_links(self, links: list[str]) -> str:
         for link in links:
-            if "oreilly.com" in link:
+            if link.startswith("https://www.oreilly.com/library/view/"):
+                print(f"O'Reilly link found: {link}")
+                fixed_link = self.cut_oreilly_link(link)
                 # Get the HTML content of the link
-                print(f"Getting HTML content from {link}")
-                response = requests.get(link)
+                print(f"Getting HTML content from {fixed_link}")
+                response = requests.get(fixed_link)
                 html_content = response.content
 
                 # print beginning of the HTML content
@@ -46,11 +40,11 @@ class YearFinder:
 
                 print(f"Year not found in the text: {release_date_text}")
                 return None
-
+        print("No O'Reilly links found")
         return None
 
     def find_year(self, book: Book) -> str:
-        search_term = f"{book.title} {book.author} year of publication"
+        search_term = f"{book.title} {book.author} o'reilly"
         print(f"Searching for: {search_term}")
 
         # Get the HTML content of the Google search results and convert to list
@@ -61,12 +55,6 @@ class YearFinder:
         for result in search_results:
             print(result)
 
-        # filter out links that contain bad websites
-        good_links = self._filter_links(search_results)
-        print("Good links:")
-        for link in good_links:
-            print(link)
-
-        year = self._try_find_year_in_orelly_links(good_links)
+        year = self._try_find_year_in_orelly_links(search_results)
 
         return year
