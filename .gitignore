@@ -161,4 +161,4 @@ cython_debug/
 
 # Project specific
 /book-info-*.tsv
-
+bundle-info.html
