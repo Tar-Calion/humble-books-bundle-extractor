@@ -9,7 +9,7 @@ from extractor.year_finder import YearFinder
 import time
 
 stage_2_label_books_with_openai = False
-stage_3_find_years = False
+stage_3_find_years_with_google = False
 
 
 def save_books_as_tsv(books: list[Book], suffix: str = ''):
@@ -37,13 +37,13 @@ if stage_2_label_books_with_openai:
 
     save_books_as_tsv(books, 'after-labeling')
 
-if stage_3_find_years:
-    books[3].year = YearFinder().find_year(books[3])
+if stage_3_find_years_with_google:
     for book in books:
-        # Wait for 10 seconds
-        print("Waiting for 10 seconds...")
-        time.sleep(5)
+
+        print("Waiting for 20 seconds...")
+        time.sleep(20)
 
         book.year = YearFinder().find_year(book)
 
-    save_books_as_tsv(books, 'after-year-finding')
+        # save after each book to avoid losing progress in case of an error
+        save_books_as_tsv(books, 'after-year-finding')
