@@ -1,4 +1,5 @@
 
+import re
 from extractor.book import Book
 import requests
 from bs4 import BeautifulSoup
@@ -8,7 +9,8 @@ import googlesearch
 class YearFinder:
 
     def cut_oreilly_link(self, link: str) -> str:
-        return link[:link.rfind('/') + 1]
+        match = re.search(r'(\d{13}/)', link)
+        return link[:match.end()] if match else link
 
     def _try_find_year_in_orelly_links(self, links: list[str]) -> str:
         for link in links:
@@ -28,7 +30,8 @@ class YearFinder:
 
                 # Find text from <div class="t-release-date">Released December 2022</div>
                 release_date_div = soup.find('div', class_='t-release-date')
-                release_date_text = release_date_div.get_text(strip=True) if release_date_div else "Release date not found"
+                release_date_text = release_date_div.get_text(
+                    strip=True) if release_date_div else "Release date not found"
                 print(f"Release date text: {release_date_text}")
 
                 # Extract the year from the text

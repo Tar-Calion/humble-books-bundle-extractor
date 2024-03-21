@@ -29,10 +29,39 @@ class TestYearFinder(unittest.TestCase):
         self.assertEqual(year, "2022")
 
         # Assert that the search function was called with the correct search term
-        mock_search.assert_called_once_with(f"Test Title Test Author o'reilly", num_results=10)
+        mock_search.assert_called_once_with(
+            f"Test Title Test Author o'reilly", num_results=10)
 
         # Assert that the get function was called with the correct URL
-        mock_get.assert_called_once_with("https://www.oreilly.com/library/view/scala-cookbook-2nd/9781492051534/")
+        mock_get.assert_called_once_with(
+            "https://www.oreilly.com/library/view/scala-cookbook-2nd/9781492051534/")
+
+    # link with "xhtml": https://www.oreilly.com/library/view/autotools-2nd-edition/9781098122577/xhtml/toc.xhtml
+    @patch('requests.get')
+    @patch('googlesearch.search')
+    def test_find_year_oreilly_xhtml(self, mock_search, mock_get):
+        # Mock the search function to return a list of links
+        mock_search.return_value = iter([
+            "https://books.google.com/books?id=1234567890",
+            "https://www.oreilly.com/library/view/autotools-2nd-edition/9781098122577/xhtml/toc.xhtml",
+            "https://www.amazon.com/Test-Title/dp/1234567890/",
+            "https://www.ebay.com/p/1234567890"
+        ])
+
+        # Mock the get function to return a response with a specific HTML content
+        mock_get.return_value.content = b'<html><div class="t-release-date">Released December 2022</div></html>'
+
+        # Call the find_year method and assert the returned year
+        year = self.year_finder.find_year(self.book)
+        self.assertEqual(year, "2022")
+
+        # Assert that the search function was called with the correct search term
+        mock_search.assert_called_once_with(
+            f"Test Title Test Author o'reilly", num_results=10)
+
+        # Assert that the get function was called with the correct URL
+        mock_get.assert_called_once_with(
+            "https://www.oreilly.com/library/view/autotools-2nd-edition/9781098122577/")
 
     @patch('requests.get')
     @patch('googlesearch.search')
@@ -51,7 +80,8 @@ class TestYearFinder(unittest.TestCase):
         self.assertIsNone(year)
 
         # Assert that the search function was called with the correct search term
-        mock_search.assert_called_once_with(f"Test Title Test Author o'reilly", num_results=10)
+        mock_search.assert_called_once_with(
+            f"Test Title Test Author o'reilly", num_results=10)
 
         # Assert that the get function was not called
         mock_get.assert_not_called()
@@ -73,10 +103,12 @@ class TestYearFinder(unittest.TestCase):
         self.assertIsNone(year)
 
         # Assert that the search function was called with the correct search term
-        mock_search.assert_called_once_with(f"Test Title Test Author o'reilly", num_results=10)
+        mock_search.assert_called_once_with(
+            f"Test Title Test Author o'reilly", num_results=10)
 
         # Assert that the get function was called with the correct URL
-        mock_get.assert_called_once_with("https://www.oreilly.com/library/view/test-title/1234567890/")
+        mock_get.assert_called_once_with(
+            "https://www.oreilly.com/library/view/test-title/1234567890/")
 
     # O'Reilly link is present, but the release date element does not contain a year
     @patch('requests.get')
@@ -95,10 +127,12 @@ class TestYearFinder(unittest.TestCase):
         self.assertIsNone(year)
 
         # Assert that the search function was called with the correct search term
-        mock_search.assert_called_once_with(f"Test Title Test Author o'reilly", num_results=10)
+        mock_search.assert_called_once_with(
+            f"Test Title Test Author o'reilly", num_results=10)
 
         # Assert that the get function was called with the correct URL
-        mock_get.assert_called_once_with("https://www.oreilly.com/library/view/test-title/1234567890/")
+        mock_get.assert_called_once_with(
+            "https://www.oreilly.com/library/view/test-title/1234567890/")
 
     # Google search returns no results
     @patch('requests.get')
@@ -112,7 +146,8 @@ class TestYearFinder(unittest.TestCase):
         self.assertIsNone(year)
 
         # Assert that the search function was called with the correct search term
-        mock_search.assert_called_once_with(f"Test Title Test Author o'reilly", num_results=10)
+        mock_search.assert_called_once_with(
+            f"Test Title Test Author o'reilly", num_results=10)
 
         # Assert that the get function was not called
         mock_get.assert_not_called()
