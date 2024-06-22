@@ -39,3 +39,4 @@ Extracts book infos from the humble bundle pages: title, author, description, ye
 - Add support for more websites to find the year of the book
   - Or use an AI API to find the year of the book from the scrapped websites
   - Or use an AI API for Internet search and scrapping to find the year of the book when such service is available (currently not available in the OpenAI API)
+- See https://github.com/gorbash1370/humble-bundle-book-info/tree/main/HumbleBundleBooks as other source of publishing years 
