@@ -1,63 +1,52 @@
-
-import re
 from extractor.book import Book
-import requests
-from bs4 import BeautifulSoup
-import googlesearch
+from langchain_community.retrievers import TavilySearchAPIRetriever
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_openai import ChatOpenAI
+import os
+import logging
+
+
 
 
 class YearFinder:
-
-    def cut_oreilly_link(self, link: str) -> str:
-        match = re.search(r'(\d{13}/)', link)
-        return link[:match.end()] if match else link
-
-    def _try_find_year_in_orelly_links(self, links: list[str]) -> str:
-        for link in links:
-            if link.startswith("https://www.oreilly.com/library/view/"):
-                print(f"O'Reilly link found: {link}")
-                fixed_link = self.cut_oreilly_link(link)
-                # Get the HTML content of the link
-                print(f"Getting HTML content from {fixed_link}")
-                response = requests.get(fixed_link)
-                html_content = response.content
-
-                # print beginning of the HTML content
-                print(f"HTML content beginning: {html_content[:1000]}")
-
-                # Parse the HTML content
-                soup = BeautifulSoup(html_content, 'html.parser')
-
-                # Find text from <div class="t-release-date">Released December 2022</div>
-                release_date_div = soup.find('div', class_='t-release-date')
-                release_date_text = release_date_div.get_text(
-                    strip=True) if release_date_div else "Release date not found"
-                print(f"Release date text: {release_date_text}")
-
-                # Extract the year from the text
-                year = release_date_text.split()[-1]
-                # Check if the year is a reasonable number
-                if year.isdigit() and 1900 <= int(year) <= 2100:
-                    print(f"Year: {year}")
-                    return year
-
-                print(f"Year not found in the text: {release_date_text}")
-                return None
-        print("No O'Reilly links found")
-        return None
-
+    
     def find_year(self, book: Book) -> str:
-        search_term = f"{book.title} {book.author} o'reilly"
-        print(f"Searching for: {search_term}")
+        logging.basicConfig(level=logging.DEBUG)
+        
+        retriever = TavilySearchAPIRetriever(k=3, include_generated_answer=False, include_raw_content=False)
+        
+        # result = retriever.invoke("What is the publishing year of the book " + book.title + " by " + book.author + "? Answer with the year only.")
+        
+        # logging.debug(result)
+        # 
+        # return result[0].page_content
+        
+        prompt_template = ChatPromptTemplate.from_template(
+            "Answer the question based only on the context provided.\n"
+            "Context: {context}\n"
+            "Question: {question}"
+        )
 
-        # Get the HTML content of the Google search results and convert to list
-        search_results = list(googlesearch.search(search_term, num_results=10))
+        llm = ChatOpenAI(model=os.environ.get("OPENAI_MODEL"))
 
-        # print the search results
-        print("Search results:")
-        for result in search_results:
-            print(result)
+        def format_docs(docs):
+            return "\n\n".join(doc.page_content for doc in docs)
 
-        year = self._try_find_year_in_orelly_links(search_results)
+        retriever_query = f"Publication date of the book '{book.title}' by {book.author}"
+        llm_question = (f"What is the publication year of the book '{book.title}' by {book.author}? "
+                        f"Answer with the year only. If the year is not available, answer with 'N/A'.")
+        chain = (
+                {"context": retriever | format_docs, "question": lambda _: llm_question}
+                | prompt_template
+                | llm
+                | StrOutputParser()
+        )
 
-        return year
+        result = chain.invoke(retriever_query)
+        print("YearFinder result: ", result)
+
+        return result
+    
+    

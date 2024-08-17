@@ -14,9 +14,9 @@ class CsvCreator:
         df_books = pd.DataFrame([book.__dict__ for book in books])
         df_books_reordered = df_books[['title', 'author', 'year', 'description', 'labels', 'account', 'formats', 'purchase_date', 'source']]
 
-        # Handle empty or non-numeric 'year' values, remove decimal part
+        # Handle empty or non-numeric 'year' values
         df_books_reordered['year'] = df_books_reordered['year'].apply(
-            lambda x: '' if pd.isna(x) else str(int(x)))
+            lambda x: '' if pd.isna(x) or not str(x).isnumeric() else x)
 
         # join the labels list into a string, separated by ', '
         df_books_reordered['labels'] = df_books_reordered['labels'].apply(

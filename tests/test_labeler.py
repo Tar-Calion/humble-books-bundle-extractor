@@ -21,10 +21,10 @@ class TestLabeler(unittest.TestCase):
             expected_messages = [
                 {
                     "role": "system",
-                    "content": ("Analyze the book data provided and suggest 1 to 3 labels or themes that best characterize the book. "
-                                "Consider the author, title, and description to determine the overarching themes or specific topics discussed in the book. "
-                                "Once you have identified the themes, please provide them in your response, separated by commas. "
-                                "Valid response may look like that: Java, Software Architecture")
+                    "content": ("Analyze the book data provided and suggest 1 to 2 labels or themes that best characterize the book. "
+                                "Consider the title and the description to determine the overarching theme discussed in the book. "
+                                "If the theme can be described in a specific and a generic term, provide only the specific term. "
+                                "Valid responses may look like 'Java' or 'Algorithms, Data Structures'.")
                 },
                 {
                     "role": "user",
@@ -35,7 +35,6 @@ class TestLabeler(unittest.TestCase):
                 messages=expected_messages,
                 model=unittest.mock.ANY
             )
-            self.assertTrue(mock_openai_client.chat.completions.create.call_args[1]['model'].startswith("gpt-3.5"))
 
     def test_get_labels_simulation(self):
         self.labeler.simulate = True

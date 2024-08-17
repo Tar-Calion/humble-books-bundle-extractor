@@ -4,12 +4,11 @@ from extractor.books_extractor import BooksExtractor
 from extractor.tsv_creator import CsvCreator
 from extractor.labeler import Labeler
 from dotenv import load_dotenv
-
+from langchain.globals import set_debug
 from extractor.year_finder import YearFinder
-import time
 
 stage_2_label_books_with_openai = False
-stage_3_find_years_with_google = False
+stage_3_find_years_with_tavily = True
 
 
 def save_books_as_tsv(books: list[Book], suffix: str = ''):
@@ -21,6 +20,8 @@ def save_books_as_tsv(books: list[Book], suffix: str = ''):
 
 
 load_dotenv(override=True)
+
+set_debug(True)
 
 
 # Load the HTML content from file
@@ -37,12 +38,8 @@ if stage_2_label_books_with_openai:
 
     save_books_as_tsv(books, 'after-labeling')
 
-if stage_3_find_years_with_google:
+if stage_3_find_years_with_tavily:
     for book in books:
-
-        print("Waiting for 20 seconds...")
-        time.sleep(20)
-
         book.year = YearFinder().find_year(book)
 
         # save after each book to avoid losing progress in case of an error
