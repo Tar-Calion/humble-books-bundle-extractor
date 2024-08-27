@@ -25,7 +25,7 @@ class BooksExtractor:
             # remove ',', 'and' and make uppercase
             formats_text = formats_text.replace(',', '').replace('and', '').upper()
             # split by space, ignore empty strings
-            return list(filter(None, formats_text.split(' ')))
+            return sorted(list(filter(None, formats_text.split(' '))))
         else:
             return []
 
