@@ -46,7 +46,9 @@ class BooksExtractor:
 
             # Find the nearest description tag relative to the current title tag
             description_tag = title_tag.find_next('section', class_='description')
-            description = description_tag.get_text(strip=True) if description_tag else 'No description available'
+            description = description_tag.get_text(strip=True, separator = '. ') if description_tag else 'No description available'
+            description = description.replace('.. ', '. ')
+            description = description.replace(':. ', ': ')
             description = self._butify_text(description)
 
             formats = self._get_formats(title_tag)
