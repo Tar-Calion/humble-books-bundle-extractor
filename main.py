@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from langchain.globals import set_debug
 from extractor.year_finder import YearFinder
 
-stage_2_label_books_with_openai = False
+stage_2_label_books_with_openai = True
 stage_3_find_years_with_tavily = True
 
 

@@ -8,7 +8,7 @@ class TestBooksExtractor(unittest.TestCase):
 
     def setUp(self):
         self.extractor = BooksExtractor()
-        with open('resources/bundle-info.html', 'r', encoding='utf-8') as html_file:
+        with open('tests/resources/bundle-info.html', 'r', encoding='utf-8') as html_file:
             self.html_content = html_file.read()
 
     def test_extract(self):
